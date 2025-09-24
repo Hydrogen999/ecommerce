@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Dr. Luxury</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        navy: '#13274F',
+                        cream: '#F8F4E3',
+                        charcoal: '#2A2A2A',
+                      }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(rgba(19, 39, 79, 0.7), rgba(19, 39, 79, 0.7)), url('picshop.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .category-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .newsletter-bg {
+            background: linear-gradient(rgba(19, 39, 79, 0.85), rgba(19, 39, 79, 0.85)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Search bar animation */
+        .search-container {
+            transition: all 0.3s ease;
+            width: 40px;
+            overflow: hidden;
+        }
+        
+        .search-container.expanded {
+            width: 250px;
+        }
+        
+        /* Cart and Wishlist counters */
+        .counter {
+            display: none;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #D4AF37;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .counter.active {
+            display: flex;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .notification.success {
+            background-color: #10B981;
+        }
+        
+        .notification.error {
+            background-color: #EF4444;
+        }
+        
+        /* Wishlist button active state */
+        .wishlist-btn.active {
+            background-color: #D4AF37 !important;
+            color: white !important;
+        }
+    </style>
+</head>
+<body class="bg-cream text-charcoal">
+    <!-- Notification Element -->
+    <div id="notification" class="notification hidden">
+        <span id="notification-message"></span>
+    </div>
+
+    <!-- Header/Navigation -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="login.html" class="text-2xl font-bold text-navy"><span class="text-gold">Dr.</span> Luxury</a>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="hidden md:flex space-x-10">
+                    <a href="login.html" class="text-navy hover:text-gold font-medium">Home</a>
+                    <a href="login.html" class="text-navy hover:text-gold font-medium">Men</a>
+                    <a href="login.html" class="text-navy hover:text-gold font-medium">Women</a>
+                    <a href="login.html" class="text-navy hover:text-gold font-medium">Unisex</a>
+                    <a href="login.html" class="text-navy hover:text-gold font-medium">Shoes</a>
+                    <a href="login.html" class="text-navy hover:text-gold font-medium">About</a>
+                </nav>
+                
+                <!-- Icons -->
+                <div class="flex items-center space-x-6">
+                    <!-- Search Container -->
+                    <div class="search-container flex items-center bg-gray-100 rounded-full px-2 py-1">
+                        <button id="search-toggle" class="text-navy hover:text-gold">
+                            <i class="fas fa-search text-xl"></i>
+                        </button>
+                        <input type="text" id="search-input" class="bg-transparent border-none focus:outline-none focus:ring-0 w-0 px-2" placeholder="Search...">
+                    </div>
+                    
+                    <!-- Wishlist -->
+                    <div class="relative">
+                        <button id="wishlist-btn" class="text-navy hover:text-gold">
+                            <i class="fas fa-heart text-xl"></i>
+                            <span id="wishlist-counter" class="counter">0</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Cart -->
+                    <div class="relative">
+                        <button id="cart-btn" class="text-navy hover:text-gold">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="cart-counter" class="counter">0</span>
+                        </button>
+                    </div>
+                    
+                    <!-- User Profile -->
+                    <!-- <div class="relative">
+                        <button id="user-btn" class="text-navy hover:text-gold">
+                            <i class="fas fa-user text-xl"></i>
+                        </button>
+                        <div id="user-dropdown" class="absolute hidden right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                            <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="orders.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Orders</a>
+                            <a href="wishlist.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Wishlist</a>
+                            <a href="index.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div> -->
+                    
+                    <button class="md:hidden text-navy hover:text-gold">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-20 md:py-32">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6">Welcome to Dr. Luxury</h2>
+            <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto">Where style meets elegance. Discover the finest collection of luxury clothing and accessories for the modern individual.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="login.html" class="bg-gold hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-full transition duration-300">Shop Now</a>
+                <a href="login.html" class="border-2 border-white hover:bg-white hover:text-navy font-bold py-3 px-8 rounded-full transition duration-300">New Arrivals</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-navy mb-12">Shop By Category</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Men's Category -->
+                <div class="category-card relative overflow-hidden rounded-lg shadow-lg group">
+                    <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Men's Collection" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-white">Men</h3>
+                            <a href="login.html" class="inline-block mt-4 text-white border border-white py-2 px-6 hover:bg-white hover:text-navy transition duration-300">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Women's Category -->
+                <div class="category-card relative overflow-hidden rounded-lg shadow-lg group">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=772&q=80" alt="Women's Collection" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-white">Women</h3>
+                            <a href="login.html" class="inline-block mt-4 text-white border border-white py-2 px-6 hover:bg-white hover:text-navy transition duration-300">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Unisex Category -->
+                <div class="category-card relative overflow-hidden rounded-lg shadow-lg group">
+                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Unisex Collection" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-white">Unisex</h3>
+                            <a href="login.html" class="inline-block mt-4 text-white border border-white py-2 px-6 hover:bg-white hover:text-navy transition duration-300">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shoes Category -->
+                <div class="category-card relative overflow-hidden rounded-lg shadow-lg group">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Shoes Collection" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-white">Shoes</h3>
+                            <a href="login.html" class="inline-block mt-4 text-white border border-white py-2 px-6 hover:bg-white hover:text-navy transition duration-300">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-16 bg-cream">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-navy mb-4">Featured Products</h2>
+            <p class="text-center text-gray-600 mb-12">Discover our carefully curated selection of premium products</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Luxury Watch" class="w-full h-64 object-cover">
+                        <div class="absolute top-2 right-2 bg-gold text-white text-xs font-bold px-2 py-1 rounded">NEW</div>
+                        <button class="wishlist-btn absolute top-2 left-2 bg-white p-2 rounded-full shadow-md hover:bg-gold hover:text-white">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1">Premium Chronograph Watch</h3>
+                        <p class="text-gray-600 text-sm mb-3">Luxury Accessories</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-navy">$349.99</span>
+                            <button class="add-to-cart bg-navy text-white py-1 px-3 rounded-full text-sm hover:bg-gold transition duration-300">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1036&q=80" alt="Designer Handbag" class="w-full h-64 object-cover">
+                        <button class="wishlist-btn absolute top-2 left-2 bg-white p-2 rounded-full shadow-md hover:bg-gold hover:text-white">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1">Designer Leather Handbag</h3>
+                        <p class="text-gray-600 text-sm mb-3">Women's Accessories</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-navy">$289.99</span>
+                            <button class="add-to-cart bg-navy text-white py-1 px-3 rounded-full text-sm hover:bg-gold transition duration-300">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=0690&q=80" alt="Men's Suit" class="w-full h-64 object-cover">
+                        <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">SALE</div>
+                        <button class="wishlist-btn absolute top-2 left-2 bg-white p-2 rounded-full shadow-md hover:bg-gold hover:text-white">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1">Premium Business Suit</h3>
+                        <p class="text-gray-600 text-sm mb-3">Men's Clothing</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-navy"><span class="line-through text-gray-400 text-sm">$499.99</span> $399.99</span>
+                            <button class="add-to-cart bg-navy text-white py-1 px-3 rounded-full text-sm hover:bg-gold transition duration-300">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1529903384028-929ae5dccdf1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Women's Dress" class="w-full h-64 object-cover">
+                        <button class="wishlist-btn absolute top-2 left-2 bg-white p-2 rounded-full shadow-md hover:bg-gold hover:text-white">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1">Elegant Evening Dress</h3>
+                        <p class="text-gray-600 text-sm mb-3">Women's Clothing</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-navy">$279.99</span>
+                            <button class="add-to-cart bg-navy text-white py-1 px-3 rounded-full text-sm hover:bg-gold transition duration-300">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="login.html" class="inline-block bg-navy text-white font-bold py-3 px-8 rounded-full hover:bg-gold transition duration-300">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Preview Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="About Dr. Luxury" class="rounded-lg shadow-lg">
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-6">About Dr. Luxury</h2>
+                    <p class="text-gray-700 mb-4">Founded in 2010, Dr. Luxury has been at the forefront of luxury fashion, providing our discerning clients with the finest clothing and accessories from around the world.</p>
+                    <p class="text-gray-700 mb-6">Our commitment to quality, craftsmanship, and exceptional customer service has made us a trusted name in luxury retail. We carefully curate each collection to ensure our customers have access to the most exquisite pieces.</p>
+                    <a href="login.html" class="inline-block bg-gold text-white font-bold py-3 px-8 rounded-full hover:bg-navy transition duration-300">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-bg py-16 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Join Our Exclusive Community</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Subscribe to our newsletter for early access to new collections, special offers, and style tips.</p>
+            
+            <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+                <input type="email" placeholder="Your email address" class="flex-grow py-3 px-4 rounded-full text-navy focus:outline-none focus:ring-2 focus:ring-gold">
+                <button type="submit" class="bg-gold text-navy font-bold py-3 px-8 rounded-full hover:bg-yellow-600 transition duration-300">Subscribe</button>
+            </form>
+            
+            <p class="text-sm mt-4 opacity-80">By subscribing, you agree to our Terms and Privacy Policy.</p>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-cream">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-navy mb-12">What Our Customers Say</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="text-gold text-2xl">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">"The quality of the products at Dr. Luxury is exceptional. I've never been disappointed with any of my purchases."</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold">aishat ade</h4>
+                            <p class="text-sm text-gray-600">Loyal Customer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="text-gold text-2xl">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">"The customer service is outstanding. They helped me find the perfect outfit for my anniversary celebration."</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=772&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold">fawaz ade</h4>
+                            <p class="text-sm text-gray-600">Fashion Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="text-gold text-2xl">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">"Fast shipping and the products always exceed my expectations. Dr. Luxury is my go-to for all special occasions."</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold">faruq ade</h4>
+                            <p class="text-sm text-gray-600">Regular Shopper</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-navy text-white pt-12 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Brand Column -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-4"><span class="text-gold">Dr.</span> Luxury</h3>
+                    <p class="text-gray-400 mb-4">Elevating your style with premium quality clothing and accessories for every occasion.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-gold"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gold"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gold"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gold"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Shop Column -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Shop</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Men's Collection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Women's Collection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Unisex Collection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Shoes & Footwear</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Accessories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">New Arrivals</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support Column -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Shipping & Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Size Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Column -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-gold"></i>
+                            <span>123 Luxury Avenue, Fashion District, NY 10001</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-3 text-gold"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-gold"></i>
+                            <span>info@drluxury.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2023 Dr. Luxury. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize cart and wishlist counters
+            let cartCount = 0;
+            let wishlistCount = 0;
+            const cartCounter = document.getElementById('cart-counter');
+            const wishlistCounter = document.getElementById('wishlist-counter');
+            
+            // Track wishlisted items
+            const wishlistedItems = new Set();
+            
+            // Search functionality
+            const searchToggle = document.getElementById('search-toggle');
+            const searchContainer = document.querySelector('.search-container');
+            const searchInput = document.getElementById('search-input');
+            
+            searchToggle.addEventListener('click', function() {
+                searchContainer.classList.toggle('expanded');
+                if (searchContainer.classList.contains('expanded')) {
+                    searchInput.focus();
+                    searchInput.style.width = '100%';
+                    searchInput.style.padding = '0 10px';
+                } else {
+                    searchInput.style.width = '0';
+                    searchInput.style.padding = '0';
+                    searchInput.value = '';
+                }
+            });
+            
+            // Search functionality
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = searchInput.value.trim();
+                    if (searchTerm) {
+                        showNotification(`Searching for: ${searchTerm}`, 'success');
+                        // In a real application, this would redirect to search results
+                        setTimeout(() => {
+                            window.location.href = `shop.html?search=${encodeURIComponent(searchTerm)}`;
+                        }, 1000);
+                    }
+                }
+            });
+            
+            // User dropdown
+            const userBtn = document.getElementById('user-btn');
+            const userDropdown = document.getElementById('user-dropdown');
+            
+            userBtn.addEventListener('click', function() {
+                userDropdown.classList.toggle('hidden');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!userBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                    userDropdown.classList.add('hidden');
+                }
+            });
+            
+            // Add to cart functionality
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    cartCount++;
+                    cartCounter.textContent = cartCount;
+                    cartCounter.classList.add('active');
+                    
+                    const product = this.closest('.product-card');
+                    const productName = product.querySelector('h3').textContent;
+                    
+                    showNotification(`${productName} added to cart!`, 'success');
+                    
+                    // Button feedback
+                    this.innerHTML = 'Added!';
+                    this.classList.add('bg-green-500');
+                    this.classList.remove('bg-navy', 'hover:bg-gold');
+                    setTimeout(() => {
+                        this.innerHTML = 'Add to Cart';
+                        this.classList.remove('bg-green-500');
+                        this.classList.add('bg-navy', 'hover:bg-gold');
+                    }, 2000);

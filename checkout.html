@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr Luxury - Checkout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .progress-bar {
+            height: 6px;
+            transition: width 0.5s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            ring: 2px;
+        }
+        @media (max-width: 768px) {
+            .progress-steps {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .progress-connector {
+                width: 1px;
+                height: 20px;
+                margin: 2px 0 2px 15px;
+            }
+            .step-item {
+                flex-direction: row;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="#" class="text-xl md:text-2xl font-bold text-indigo-600">Dr Luxury</a>
+            <div class="flex items-center space-x-4">
+                <a href="#" class="text-gray-600 hover:text-indigo-600"><i class="fas fa-shopping-cart"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Indicator - Made Responsive -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex flex-col md:flex-row progress-steps mb-8 relative">
+            <div class="flex items-center step-item">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center">1</div>
+                <div class="ml-2 text-sm font-medium text-indigo-600">Information</div>
+            </div>
+            <div class="progress-connector flex-1 mx-2 md:mx-4 flex items-center justify-center md:block">
+                <div class="h-1 w-full md:h-1 md:w-auto bg-gray-200 rounded-full md:my-4">
+                    <div class="progress-bar bg-indigo-600 h-1 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="flex items-center step-item">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center">2</div>
+                <div class="ml-2 text-sm font-medium text-gray-600">Shipping</div>
+            </div>
+            <div class="progress-connector flex-1 mx-2 md:mx-4 flex items-center justify-center md:block">
+                <div class="h-1 w-full md:h-1 md:w-auto bg-gray-200 rounded-full md:my-4"></div>
+            </div>
+            <div class="flex items-center step-item">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center">3</div>
+                <div class="ml-2 text-sm font-medium text-gray-600">Payment</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 mb-12 flex flex-col lg:flex-row gap-6">
+        <!-- Checkout Form -->
+        <div class="w-full lg:w-2/3">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <!-- Form Header -->
+                <div class="bg-indigo-700 px-4 md:px-6 py-4">
+                    <h1 class="text-xl md:text-2xl font-bold text-white">Checkout</h1>
+                    <p class="text-indigo-100 text-sm md:text-base">Complete your purchase by filling the information below</p>
+                </div>
+
+                <form id="checkoutForm" class="p-4 md:p-6">
+                    <!-- Step 1: Personal Information -->
+                    <div class="form-step active" id="step1">
+                        <h2 class="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-gray-800 border-b pb-2">Personal Information</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="email" name="email" required 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="button" class="next-step bg-indigo-600 text-white px-4 py-2 md:px-6 md:py-2 rounded-lg hover:bg-indigo-700 transition duration-300 text-sm md:text-base">
+                                Continue to Shipping <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Shipping Address -->
+                    <div class="form-step" id="step2">
+                        <h2 class="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-gray-800 border-b pb-2">Shipping Address</h2>
+                        
+                        <div class="mb-6">
+                            <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
+                            <input type="text" id="address" name="address" required 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
+                            <div>
+                                <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                <input type="text" id="city" name="city" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State/Province</label>
+                                <input type="text" id="state" name="state" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label for="zipCode" class="block text-sm font-medium text-gray-700 mb-1">ZIP/Postal Code</label>
+                                <input type="text" id="zipCode" name="zipCode" required 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                            <select id="country" name="country" required 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Select a country</option>
+                                <option value="US">United States</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="CA">Canada</option>
+                                <option value="AU">Australia</option>
+                                <option value="DE">nNigeria</option>
+                                <option value="FR">France</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-col-reverse md:flex-row justify-between gap-4 md:gap-0">
+                            <button type="button" class="prev-step text-gray-600 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition duration-300 text-sm md:text-base">
+                                <i class="fas fa-arrow-left mr-2"></i> Back
+                            </button>
+                            <button type="button" class="next-step bg-indigo-600 text-white px-4 py-2 md:px-6 md:py-2 rounded-lg hover:bg-indigo-700 transition duration-300 text-sm md:text-base">
+                                <a href="minibank.html"> Continue to Payment </a>
+                               <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Payment Method -->
+                    <!-- <div class="form-step" id="step3">
+                        <h2 class="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-gray-800 border-b pb-2">Payment Method</h2>
+                        
+                        <div class="mb-6">
+                            <div class="flex items-center mb-4 p-3 md:p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-400 transition duration-200">
+                                <input type="radio" id="creditCard" name="paymentMethod" value="creditCard" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500" checked>
+                                <label for="creditCard" class="ml-3 block text-sm font-medium text-gray-700">
+                                    Credit/Debit Card
+                                </label>
+                            </div>
+
+                            <div class="flex items-center mb-4 p-3 md:p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-400 transition duration-200">
+                                <input type="radio" id="paypal" name="paymentMethod" value="paypal" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                <label for="paypal" class="ml-3 block text-sm font-medium text-gray-700">
+                                    PayPal
+                                </label>
+                            </div>
+
+                            <div class="flex items-center p-3 md:p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-400 transition duration-200">
+                                <input type="radio" id="bankTransfer" name="paymentMethod" value="bankTransfer" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                <label for="bankTransfer" class="ml-3 block text-sm font-medium text-gray-700">
+                                    Bank Transfer
+                                </label>
+                            </div>
+                        </div> -->
+
+                        <!-- Credit Card Form (shown by default) -->
+                        <!-- <div id="creditCardForm">
+                            <div class="mb-6">
+                                <label for="cardNumber" class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+                                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+                                <div>
+                                    <label for="expiryDate" class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label for="cvv" class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                                    <input type="text" id="cvv" name="cvv" placeholder="123" 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="cardName" class="block text-sm font-medium text-gray-700 mb-1">Name on Card</label>
+                                <input type="text" id="cardName" name="cardName" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col-reverse md:flex-row justify-between gap-4 md:gap-0">
+                            <button type="button" class="prev-step text-gray-600 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition duration-300 text-sm md:text-base">
+                                <i class="fas fa-arrow-left mr-2"></i> Back
+                            </button>
+                            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 md:px-6 md:py-2 rounded-lg hover:bg-indigo-700 transition duration-300 text-sm md:text-base">
+                                Complete Purchase <i class="fas fa-check ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Summary Sidebar - Made Responsive -->
+        <!-- <div class="w-full lg:w-1/3 mt-6 lg:mt-0">
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6 sticky top-24">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Order Summary</h2>
+                
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Subtotal</span>
+                        <span class="font-medium">$247.96</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Shipping</span>
+                        <span class="font-medium">$5.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Tax</span>
+                        <span class="font-medium">$19.84</span>
+                    </div>
+                    <div class="flex justify-between border-t border-gray-200 pt-4">
+                        <span class="text-lg font-bold">Total</span>
+                        <span class="text-lg font-bold">$272.80</span>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-medium text-gray-700 mb-2">Items in your cart</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Classic White T-Shirt" class="w-12 h-12 object-cover rounded"> -->
+                            <!-- <div class="ml-3">
+                                <p class="text-sm font-medium">Classic White T-Shirt</p>
+                                <p class="text-xs text-gray-500">Size: M • Qty: 1</p>
+                            </div>
+                            <div class="ml-auto font-medium">$29.99</div>
+                        </div>
+                        <div class="flex items-center">
+                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Running Shoes" class="w-12 h-12 object-cover rounded">
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">Running Shoes</p>
+                                <p class="text-xs text-gray-500">Size: 42 • Qty: 1</p>
+                            </div>
+                            <div class="ml-auto font-medium">$79.99</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form steps navigation
+            const formSteps = document.querySelectorAll('.form-step');
+            const nextButtons = document.querySelectorAll('.next-step');
+            const prevButtons = document.querySelectorAll('.prev-step');
+            const progressBar = document.querySelector('.progress-bar');
+            let currentStep = 0;
+
+            // Update form steps
+            function updateFormStep() {
+                formSteps.forEach((step, index) => {
+                    if (index === currentStep) {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active');
+                    }
+                });
+                
+                // Update progress bar
+                const progress = (currentStep / (formSteps.length - 1)) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+
+            // Next button click
+            nextButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Validate current step before proceeding
+                    if (validateStep(currentStep)) {
+                        currentStep++;
+                        updateFormStep();
+                    }
+                });
+            });
+
+            // Previous button click
+            prevButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    currentStep--;
+                    updateFormStep();
+                });
+            });
+
+            // Form submission
+            document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateStep(currentStep)) {
+                    // Simulate form submission
+                    alert('Order placed successfully! Thank you for your purchase.');
+                    // In a real application, you would submit the form data to your server here
+                }
+            });
+
+            // Payment method toggle
+            const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
+            const creditCardForm = document.getElementById('creditCardForm');
+            
+            paymentMethods.forEach(method => {
+                method.addEventListener('change', function() {
+                    if (this.value === 'creditCard') {
+                        creditCardForm.style.display = 'block';
+                    } else {
+                        creditCardForm.style.display = 'none';
+                    }
+                });
+            });
+
+            // Basic validation for each step
+            function validateStep(stepIndex) {
+                let isValid = true;
+                
+                if (stepIndex === 0) {
+                    // Validate personal information
+                    const firstName = document.getElementById('firstName');
+                    const lastName = document.getElementById('lastName');
+                    const email = document.getElementById('email');
+                    const phone = document.getElementById('phone');
+                    
+                    if (!firstName.value.trim()) {
+                        markInvalid(firstName, 'First name is required');
+                        isValid = false;
+                    } else {
+                        markValid(firstName);
+                    }
+                    
+                    if (!lastName.value.trim()) {
+                        markInvalid(lastName, 'Last name is required');
+                        isValid = false;
+                    } else {
+                        markValid(lastName);
+                    }
+                    
+                    if (!email.value.trim() || !isValidEmail(email.value)) {
+                        markInvalid(email, 'Please enter a valid email address');
+                        isValid = false;
+                    } else {
+                        markValid(email);
+                    }
+                    
+                    if (!phone.value.trim() || !isValidPhone(phone.value)) {
+                        markInvalid(phone, 'Please enter a valid phone number');
+                        isValid = false;
+                    } else {
+                        markValid(phone);
+                    }
+                } else if (stepIndex === 1) {
+                    // Validate shipping address
+                    const address = document.getElementById('address');
+                    const city = document.getElementById('city');
+                    const state = document.getElementById('state');
+                    const zipCode = document.getElementById('zipCode');
+                    const country = document.getElementById('country');
+                    
+                    if (!address.value.trim()) {
+                        markInvalid(address, 'Address is required');
+                        isValid = false;
+                    } else {
+                        markValid(address);
+                    }
+                    
+                    if (!city.value.trim()) {
+                        markInvalid(city, 'City is required');
+                        isValid = false;
+                    } else {
+                        markValid(city);
+                    }
+                    
+                    if (!state.value.trim()) {
+                        markInvalid(state, 'State is required');
+                        isValid = false;
+                    } else {
+                        markValid(state);
+                    }
+                    
+                    if (!zipCode.value.trim()) {
+                        markInvalid(zipCode, 'ZIP code is required');
+                        isValid = false;
+                    } else {
+                        markValid(zipCode);
+                    }
+                    
+                    if (!country.value) {
+                        markInvalid(country, 'Please select a country');
+                        isValid = false;
+                    } else {
+                        markValid(country);
+                    }
+                } else if (stepIndex === 2) {
+                    // Validate payment information if credit card is selected
+                    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+                    
+                    if (paymentMethod === 'creditCard') {
+                        const cardNumber = document.getElementById('cardNumber');
+                        const expiryDate = document.getElementById('expiryDate');
+                        const cvv = document.getElementById('cvv');
+                        const cardName = document.getElementById('cardName');
+                        
+                        if (!cardNumber.value.trim() || !isValidCardNumber(cardNumber.value)) {
+                            markInvalid(cardNumber, 'Please enter a valid card number');
+                            isValid = false;
+                        } else {
+                            markValid(cardNumber);
+                        }
+                        
+                        if (!expiryDate.value.trim() || !isValidExpiryDate(expiryDate.value)) {
+                            markInvalid(expiryDate, 'Please enter a valid expiry date (MM/YY)');
+                            isValid = false;
+                        } else {
+                            markValid(expiryDate);
+                        }
+                        
+                        if (!cvv.value.trim() || !isValidCVV(cvv.value)) {
+                            markInvalid(cvv, 'Please enter a valid CVV');
+                            isValid = false;
+                        } else {
+                            markValid(cvv);
+                        }
+                        
+                        if (!cardName.value.trim()) {
+                            markInvalid(cardName, 'Name on card is required');
+                            isValid = false;
+                        } else {
+                            markValid(cardName);
+                        }
+                    }
+                }
+                
+                return isValid;
+            }
+
+            // Validation helper functions
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            function isValidPhone(phone) {
+                const re = /^[\+]?[1-9][\d]{0,15}$/;
+                return re.test(phone.replace(/\D/g, ''));
+            }
+
+            function isValidCardNumber(cardNumber) {
+                const re = /^[0-9]{16}$/;
+                return re.test(cardNumber.replace(/\s/g, ''));
+            }
+
+            function isValidExpiryDate(expiryDate) {
+                const re = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+                return re.test(expiryDate);
+            }
+
+            function isValidCVV(cvv) {
+                const re = /^[0-9]{3,4}$/;
+                return re.test(cvv);
+            }
+
+            function markInvalid(element, message) {
+                element.style.borderColor = '#ef4444';
+                // Show error message (in a real app, you'd want a more robust error display)
+                if (!element.nextElementSibling || !element.nextElementSibling.classList.contains('error-message')) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message text-red-500 text-xs mt-1';
+                    errorDiv.textContent = message;
+                    element.parentNode.appendChild(errorDiv);
+                }
+            }
+
+            function markValid(element) {
+                element.style.borderColor = '#d1d5db';
+                // Remove error message if present
+                if (element.nextElementSibling && element.nextElementSibling.classList.contains('error-message')) {
+                    element.nextElementSibling.remove();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

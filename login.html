@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Dr. Luxury</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        navy: '#13274F',
+                        cream: '#F8F4E3',
+                        charcoal: '#2A2A2A',
+                      }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .login-bg {
+            background: linear-gradient(rgba(19, 39, 79, 0.85), rgba(19, 39, 79, 0.85)), url('https://images.unsplash.com/photo-1560009523-2d4f2d13b3e1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #D4AF37;
+        }
+    </style>
+</head>
+<body class="bg-cream">
+    <!-- Header/Navigation -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-navy"><span class="text-gold">Dr.</span> Luxury</a>
+                </div>
+                
+                <!-- Navigation -->
+                <!-- <nav class="hidden md:flex space-x-10">
+                    <a href="index.html" class="text-navy hover:text-gold font-medium">Home</a>
+                    <a href="shop.html" class="text-navy hover:text-gold font-medium">Shop</a>
+                    <a href="about.html" class="text-navy hover:text-gold font-medium">About</a>
+                </nav> -->
+                
+                <!-- Icons -->
+                <!-- <div class="flex items-center space-x-6">
+                    <a href="search.html" class="text-navy hover:text-gold">
+                        <i class="fas fa-search text-xl"></i>
+                    </a>
+                    <a href="cart.html" class="text-navy hover:text-gold">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                    </a>
+                    <a href="login.html" class="text-navy hover:text-gold">
+                        <i class="fas fa-user text-xl"></i>
+                    </a>
+                    <button class="md:hidden text-navy hover:text-gold">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div> -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Section -->
+    <section class="login-bg py-16 min-h-screen flex items-center">
+        <div class="container mx-auto px-4">
+            <div class="max-w-md mx-auto bg-white rounded-xl shadow-2xl overflow-hidden">
+                <div class="bg-navy py-4 px-6">
+                    <h2 class="text-2xl font-bold text-center text-white">Welcome Back</h2>
+                    <p class="text-center text-gold mt-1">Sign in to your Dr. Luxury account</p>
+                </div>
+                
+                <div class="py-6 px-8">
+                    <form id="loginForm" class="space-y-6">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-envelope text-gray-400"></i>
+                                </div>
+                                <input type="email" id="email" name="email" class="form-input py-3 px-4 block w-full pl-10 border border-gray-300 rounded-lg focus:ring-gold focus:border-gold" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-lock text-gray-400"></i>
+                                </div>
+                                <input type="password" id="password" name="password" class="form-input py-3 px-4 block w-full pl-10 border border-gray-300 rounded-lg focus:ring-gold focus:border-gold" placeholder="Enter your password" required>
+                                <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <i class="fas fa-eye text-gray-400 hover:text-gold"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-gold focus:ring-gold border-gray-300 rounded">
+                                <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                            </div>
+                            
+                            <div class="text-sm">
+                                <a href="forgot-password.html" class="font-medium text-navy hover:text-gold">Forgot password?</a>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-navy hover:bg-gold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold transition duration-300">
+                                <a href="home.html"> Sign in</a>
+                               
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="mt-6">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 grid grid-cols-2 gap-3">
+                            <div>
+                                <a href="#" class="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    <i class="fab fa-google text-red-500 mr-2"></i> Google
+                                </a>
+                            </div>
+                            
+                            <div>
+                                <a href="#" class="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    <i class="fab fa-facebook-f text-blue-600 mr-2"></i> Facebook
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-600">
+                            Don't have an account?
+                            <a href="signup.html" class="font-medium text-navy hover:text-gold">Sign up now</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- <footer class="bg-navy text-white pt-12 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8"> -->
+                <!-- Brand Column -->
+                <!-- <div>
+                    <h3 class="text-2xl font-bold mb-4"><span class="text-gold">Dr.</span> Luxury</h3>
+                    <p class="text-gray-400 mb-4">Elevating your style with premium quality clothing and accessories for every occasion.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-gold"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gold"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gold"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-gold"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                 -->
+                <!-- Shop Column -->
+                <!-- <div>
+                    <h4 class="text-lg font-bold mb-4">Shop</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Men's Collection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Women's Collection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Unisex Collection</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Shoes & Footwear</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Accessories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">New Arrivals</a></li>
+                    </ul>
+                </div> -->
+                
+                <!-- Support Column -->
+                <!-- <div>
+                    <h4 class="text-lg font-bold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Shipping & Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Size Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-gold">Terms of Service</a></li>
+                    </ul>
+                </div> -->
+                
+                <!-- Contact Column -->
+                <!-- <div>
+                    <h4 class="text-lg font-bold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-gold"></i>
+                            <span>123 Luxury Avenue, Fashion District, NY 10001</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-3 text-gold"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-gold"></i>
+                            <span>info@drluxury.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2023 Dr. Luxury. All rights reserved.</p>
+            </div>
+        </div>
+    </footer> -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle password visibility
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle eye icon
+                const eyeIcon = this.querySelector('i');
+                if (type === 'text') {
+                    eyeIcon.classList.remove('fa-eye');
+                    eyeIcon.classList.add('fa-eye-slash');
+                } else {
+                    eyeIcon.classList.remove('fa-eye-slash');
+                    eyeIcon.classList.add('fa-eye');
+                }
+            });
+            
+            // Form validation
+            const loginForm = document.getElementById('loginForm');
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Simple validation
+                if (!email || !password) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+                
+                // Password length validation
+                if (password.length < 6) {
+                    showNotification('Password must be at least 6 characters', 'error');
+                    return;
+                }
+                
+                // Simulate successful login
+                showNotification('Login successful! Redirecting...', 'success');
+                
+                // Redirect to home page after a short delay
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            });
+            
+            // Notification function
+            function showNotification(message, type) {
+                // Remove any existing notifications
+                const existingNotification = document.querySelector('.fixed-notification');
+                if (existingNotification) {
+                    existingNotification.remove();
+                }
+                
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `fixed-notification fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg text-white font-medium ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+                notification.textContent = message;
+                
+                // Add to page
+                document.body.appendChild(notification);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        });
+    </script>
+    <script src="index.js"></script>
+</body>
+</html>
